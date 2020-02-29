@@ -25,6 +25,10 @@ namespace PlanYourHeist {
 
             int bankDifficulty = 100;
             int allMembersSkills = 0;
+            Random rand = new Random ();
+            int luckValue = rand.Next (-10, 11);
+
+            bankDifficulty += luckValue;
 
             foreach (KeyValuePair<int, string> member in memberName) {
                 int skillLevel = memberSkillLevel[member.Key];
@@ -33,6 +37,8 @@ namespace PlanYourHeist {
                 // Console.WriteLine ($"Name: {member.Value} Skill Level: {skillLevel} Courage Level: {courageLevel}");
             }
 
+            Console.WriteLine ($"Members combined skill levels: {allMembersSkills}");
+            Console.WriteLine ($"Bank difficulty: {bankDifficulty}");
             if (allMembersSkills >= bankDifficulty) {
                 Console.WriteLine ("You've got a chance!");
             } else {
