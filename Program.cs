@@ -22,11 +22,15 @@ namespace PlanYourHeist {
                 Console.WriteLine ("Enter member courage level (0.0 - 2.0)");
                 memberCourage.Add (memberCourage.Count, decimal.Parse (Console.ReadLine ()));
             }
+            Console.WriteLine ("Enter bank difficulty level");
+            int bankDifficulty = int.Parse (Console.ReadLine ());
+
             Console.WriteLine ("Enter number of trial runs");
             int trialRuns = int.Parse (Console.ReadLine ());
+            int successRun = 0;
+            int unsuccessRun = 0;
 
             for (int i = 0; i < trialRuns; i++) {
-                int bankDifficulty = 100;
                 int allMembersSkills = 0;
                 Random rand = new Random ();
                 int luckValue = rand.Next (-10, 11);
@@ -42,10 +46,13 @@ namespace PlanYourHeist {
                 Console.WriteLine ($"Bank difficulty: {bankDifficulty}");
                 if (allMembersSkills >= bankDifficulty) {
                     Console.WriteLine ("You've got a chance!");
+                    successRun += 1;
                 } else {
                     Console.WriteLine ("Maybe find a day job?");
+                    unsuccessRun += 1;
                 }
             }
+            Console.WriteLine ($"Successful trial runs: {successRun}  Unsuccessful trial runs: {unsuccessRun}");
         }
     }
 }
