@@ -22,30 +22,30 @@ namespace PlanYourHeist {
                 Console.WriteLine ("Enter member courage level (0.0 - 2.0)");
                 memberCourage.Add (memberCourage.Count, decimal.Parse (Console.ReadLine ()));
             }
+            Console.WriteLine ("Enter number of trial runs");
+            int trialRuns = int.Parse (Console.ReadLine ());
 
-            int bankDifficulty = 100;
-            int allMembersSkills = 0;
-            Random rand = new Random ();
-            int luckValue = rand.Next (-10, 11);
+            for (int i = 0; i < trialRuns; i++) {
+                int bankDifficulty = 100;
+                int allMembersSkills = 0;
+                Random rand = new Random ();
+                int luckValue = rand.Next (-10, 11);
 
-            bankDifficulty += luckValue;
+                bankDifficulty += luckValue;
 
-            foreach (KeyValuePair<int, string> member in memberName) {
-                int skillLevel = memberSkillLevel[member.Key];
-                allMembersSkills += skillLevel;
-                // decimal courageLevel = memberCourage[member.Key];
-                // Console.WriteLine ($"Name: {member.Value} Skill Level: {skillLevel} Courage Level: {courageLevel}");
+                foreach (KeyValuePair<int, string> member in memberName) {
+                    int skillLevel = memberSkillLevel[member.Key];
+                    allMembersSkills += skillLevel;
+                }
+
+                Console.WriteLine ($"Members combined skill levels: {allMembersSkills}");
+                Console.WriteLine ($"Bank difficulty: {bankDifficulty}");
+                if (allMembersSkills >= bankDifficulty) {
+                    Console.WriteLine ("You've got a chance!");
+                } else {
+                    Console.WriteLine ("Maybe find a day job?");
+                }
             }
-
-            Console.WriteLine ($"Members combined skill levels: {allMembersSkills}");
-            Console.WriteLine ($"Bank difficulty: {bankDifficulty}");
-            if (allMembersSkills >= bankDifficulty) {
-                Console.WriteLine ("You've got a chance!");
-            } else {
-                Console.WriteLine ("Maybe find a day job?");
-            }
-
         }
-
     }
 }
