@@ -6,11 +6,15 @@ namespace PlanYourHeist {
         static void Main (string[] args) {
             Console.WriteLine ("Plan Your Heist!");
 
+            Console.WriteLine ("Enter bank difficulty level");
+            int bankDifficulty = int.Parse (Console.ReadLine ());
+
             Dictionary<int, string> memberName = new Dictionary<int, string> ();
             Dictionary<int, int> memberSkillLevel = new Dictionary<int, int> ();
             Dictionary<int, decimal> memberCourage = new Dictionary<int, decimal> ();
 
             while (true) {
+
                 Console.WriteLine ("Enter team member's name");
                 string singleMemberName = Console.ReadLine ();
                 if (singleMemberName == "") {
@@ -21,9 +25,18 @@ namespace PlanYourHeist {
                 memberSkillLevel.Add (memberSkillLevel.Count, int.Parse (Console.ReadLine ()));
                 Console.WriteLine ("Enter member courage level (0.0 - 2.0)");
                 memberCourage.Add (memberCourage.Count, decimal.Parse (Console.ReadLine ()));
+
+                decimal tempSkillLevels = 0;
+                foreach (KeyValuePair<int, int> skill in memberSkillLevel) {
+                    decimal skillLevel = skill.Value;
+                    decimal courageLevel = memberCourage[skill.Key] / 2;
+
+                    tempSkillLevels += skillLevel * courageLevel;
+                }
+
+                Console.WriteLine ($"Current total skill levels: {tempSkillLevels}");
+
             }
-            Console.WriteLine ("Enter bank difficulty level");
-            int bankDifficulty = int.Parse (Console.ReadLine ());
 
             Console.WriteLine ("Enter number of trial runs");
             int trialRuns = int.Parse (Console.ReadLine ());
@@ -31,22 +44,23 @@ namespace PlanYourHeist {
             int unsuccessRun = 0;
 
             for (int i = 0; i < trialRuns; i++) {
+                int tempBankDifficulty = bankDifficulty;
                 decimal allMembersSkills = 0;
                 Random rand = new Random ();
                 int luckValue = rand.Next (-10, 11);
 
-                bankDifficulty += luckValue;
+                tempBankDifficulty += luckValue;
 
                 foreach (KeyValuePair<int, string> member in memberName) {
                     int skillLevel = memberSkillLevel[member.Key];
-                    decimal courageLevel = memberCourage[member.Key];
+                    decimal courageLevel = memberCourage[member.Key] / 2;
                     decimal adjustedSkillLevel = skillLevel * courageLevel;
                     allMembersSkills += adjustedSkillLevel;
                 }
 
                 Console.WriteLine ($"Members combined skill levels: {allMembersSkills}");
-                Console.WriteLine ($"Bank difficulty: {bankDifficulty}");
-                if (allMembersSkills >= bankDifficulty) {
+                Console.WriteLine ($"Bank difficulty: {tempBankDifficulty}");
+                if (allMembersSkills >= tempBankDifficulty) {
                     Console.WriteLine ("You've got a chance!");
                     successRun += 1;
                 } else {
