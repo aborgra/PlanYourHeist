@@ -9,32 +9,30 @@ namespace PlanYourHeist {
             Console.WriteLine ("Enter bank difficulty level");
             int bankDifficulty = int.Parse (Console.ReadLine ());
 
-            Dictionary<int, string> memberName = new Dictionary<int, string> ();
-            Dictionary<int, int> memberSkillLevel = new Dictionary<int, int> ();
-            Dictionary<int, decimal> memberCourage = new Dictionary<int, decimal> ();
-
+            List<Dictionary<string, string>> team = new List<Dictionary<string, string>> ();
+            decimal tempSkillLevels = 0;
             while (true) {
+                Dictionary<string, string> member = new Dictionary<string, string> ();
 
                 Console.WriteLine ("Enter team member's name");
                 string singleMemberName = Console.ReadLine ();
                 if (singleMemberName == "") {
                     break;
                 }
-                memberName.Add (memberName.Count, singleMemberName);
+                member.Add ("Name", singleMemberName);
                 Console.WriteLine ("Enter member skill level (1-50)");
-                memberSkillLevel.Add (memberSkillLevel.Count, int.Parse (Console.ReadLine ()));
+                member.Add ("Skill", Console.ReadLine ());
                 Console.WriteLine ("Enter member courage level (0.0 - 2.0)");
-                memberCourage.Add (memberCourage.Count, decimal.Parse (Console.ReadLine ()));
+                member.Add ("Courage", Console.ReadLine ());
 
-                decimal tempSkillLevels = 0;
-                foreach (KeyValuePair<int, int> skill in memberSkillLevel) {
-                    decimal skillLevel = skill.Value;
-                    decimal courageLevel = memberCourage[skill.Key] / 2;
+                decimal skillLevel = decimal.Parse (member["Skill"]);
+                decimal courageLevel = decimal.Parse (member["Courage"]) / 2;
 
-                    tempSkillLevels += skillLevel * courageLevel;
-                }
+                tempSkillLevels += skillLevel * courageLevel;
 
                 Console.WriteLine ($"Current total skill levels: {tempSkillLevels}");
+
+                team.Add (member);
 
             }
 
@@ -51,9 +49,9 @@ namespace PlanYourHeist {
 
                 tempBankDifficulty += luckValue;
 
-                foreach (KeyValuePair<int, string> member in memberName) {
-                    int skillLevel = memberSkillLevel[member.Key];
-                    decimal courageLevel = memberCourage[member.Key] / 2;
+                foreach (Dictionary<string, string> member in team) {
+                    int skillLevel = int.Parse (member["Skill"]);
+                    decimal courageLevel = decimal.Parse (member["Courage"]) / 2;
                     decimal adjustedSkillLevel = skillLevel * courageLevel;
                     allMembersSkills += adjustedSkillLevel;
                 }
