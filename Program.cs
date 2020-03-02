@@ -31,7 +31,7 @@ namespace PlanYourHeist {
             int unsuccessRun = 0;
 
             for (int i = 0; i < trialRuns; i++) {
-                int allMembersSkills = 0;
+                decimal allMembersSkills = 0;
                 Random rand = new Random ();
                 int luckValue = rand.Next (-10, 11);
 
@@ -39,7 +39,9 @@ namespace PlanYourHeist {
 
                 foreach (KeyValuePair<int, string> member in memberName) {
                     int skillLevel = memberSkillLevel[member.Key];
-                    allMembersSkills += skillLevel;
+                    decimal courageLevel = memberCourage[member.Key];
+                    decimal adjustedSkillLevel = skillLevel * courageLevel;
+                    allMembersSkills += adjustedSkillLevel;
                 }
 
                 Console.WriteLine ($"Members combined skill levels: {allMembersSkills}");
