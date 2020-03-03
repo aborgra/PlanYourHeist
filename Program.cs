@@ -6,11 +6,11 @@ namespace PlanYourHeist {
         static void Main (string[] args) {
             Console.WriteLine ("Plan Your Heist!");
 
-            // Dictionary<int, string> memberName = new Dictionary<int, string> ();
-            // Dictionary<int, int> memberSkillLevel = new Dictionary<int, int> ();
-            // Dictionary<int, decimal> memberCourage = new Dictionary<int, decimal> ();
-            List<Member> members = new List<Member> ();
+            Console.WriteLine ("Enter bank difficulty level");
+            int bankDifficulty = int.Parse (Console.ReadLine ());
 
+            List<Member> team = new List<Member> ();
+            decimal tempSkillLevels = 0;
             while (true) {
 
                 Console.WriteLine ("Enter team member's name");
@@ -22,15 +22,20 @@ namespace PlanYourHeist {
                 Member member = new Member ();
                 member.MemberName = singleMemberName;
                 Console.WriteLine ("Enter member skill level (1-50)");
-                member.SkillLevel = int.Parse (Console.ReadLine ());
+                member.SkillLevel = decimal.Parse (Console.ReadLine ());
                 Console.WriteLine ("Enter member courage level (0.0 - 2.0)");
                 member.CourageLevel = decimal.Parse (Console.ReadLine ());
 
-                members.Add (member);
+                decimal skillLevel = member.SkillLevel;
+                decimal courageLevel = member.CourageLevel / 2;
+
+                tempSkillLevels += skillLevel * courageLevel;
+
+                Console.WriteLine ($"Current total skill levels: {tempSkillLevels}");
+
+                team.Add (member);
 
             }
-            Console.WriteLine ("Enter bank difficulty level");
-            int bankDifficulty = int.Parse (Console.ReadLine ());
 
             Console.WriteLine ("Enter number of trial runs");
             int trialRuns = int.Parse (Console.ReadLine ());
@@ -39,29 +44,31 @@ namespace PlanYourHeist {
 
             for (int i = 0; i < trialRuns; i++) {
                 int tempBankDifficulty = bankDifficulty;
-                int allMembersSkills = 0;
+                decimal allMembersSkills = 0;
+
                 Random rand = new Random ();
                 int luckValue = rand.Next (-10, 11);
 
                 tempBankDifficulty += luckValue;
 
-                // foreach (KeyValuePair<int, string> member in memberName) {
-                //     int skillLevel = memberSkillLevel[member.Key];
-                //     allMembersSkills += skillLevel;
-                // }
-
-                foreach (Member item in members) {
-                    allMembersSkills += item.SkillLevel;
-                    Console.WriteLine (item.ToString ());
+                foreach (Member member in team) {
+                    decimal skillLevel = member.SkillLevel;
+                    decimal courageLevel = member.CourageLevel / 2;
+                    decimal adjustedSkillLevel = skillLevel * courageLevel;
+                    allMembersSkills += adjustedSkillLevel;
+                    Console.WriteLine (member.ToString ());
                 }
 
                 Console.WriteLine ($"Members combined skill levels: {allMembersSkills}");
                 Console.WriteLine ($"Bank difficulty: {tempBankDifficulty}");
                 if (allMembersSkills >= tempBankDifficulty) {
                     Console.WriteLine ("You've got a chance!");
+                    Console.WriteLine ("____________________________");
                     successRun += 1;
                 } else {
                     Console.WriteLine ("Maybe find a day job?");
+                    Console.WriteLine ("____________________________");
+
                     unsuccessRun += 1;
                 }
             }
